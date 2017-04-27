@@ -1,14 +1,12 @@
-from flask import Flask, jsonify, request, url_for, redirect
-from flask_restful import reqparse
-from flask_api import status
+from flask import Flask, jsonify, request
 
 from pymongo import MongoClient
-from bson.objectid import ObjectId
 import hashlib
 import json
 
 app = Flask(__name__)
-mongosvr = 'localhost'
+mongosvr = '172.28.128.3'
+#mongosvr = 'localhost'
 mongoport = 27017
 putkeys = ("uid", "name", "date", "md5checksum")
 getkeys = ("uid", "date")
@@ -28,8 +26,6 @@ def checkMD5(jd):
 
 @app.route("/adduser/", methods=['POST'])
 def adduser():
-    print (request)
-    print (request.get_json())
     json_data = request.get_json()
     for  jd in json_data:
         # Check if all the keys are in input
@@ -44,7 +40,6 @@ def adduser():
 
 @app.route("/checkuser", methods=['GET'])
 def checkuser():
-    print ("Request: " + str(request.args))
     if all (k in request.args for k in getkeys):
         res = cl.drdb.drcol.find({"uid": request.args['uid'], "date": {'$regex': request.args['date'][:10]}})
         return (str(res.count())), 200
