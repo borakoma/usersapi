@@ -5,8 +5,7 @@ import hashlib
 import json
 
 app = Flask(__name__)
-mongosvr = '172.28.128.3'
-#mongosvr = 'localhost'
+mongosvr = 'localhost'
 mongoport = 27017
 putkeys = ("uid", "name", "date", "md5checksum")
 getkeys = ("uid", "date")
